@@ -1,11 +1,17 @@
 from django.db import models
-
-# Create your models here.
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
 
 
 class Admission(models.Model):
     admission_date = models.DateField(auto_now_add=True)
     discharge_date = models.DateField(auto_now_add=True, null=True)
+    # patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    # doctor = models.ForeignKey(Doctor, on_delete=models.SET_NULL, null=True)
+    # hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey()
 
 
 class Bed(models.Model):
@@ -23,3 +29,6 @@ class Bed(models.Model):
     is_occupied = models.BooleanField()
     bed_type = models.CharField(
         max_length=3, choices=BED_CHOICES, default=BED_GENERAL_WARD)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey()
